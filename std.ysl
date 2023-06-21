@@ -85,14 +85,14 @@ func putstr str
 	local int index
 	local int ch
 	set index 0
-	get_char &str $index
+	get_char $str $index
 	to ch
 
 	while greater $ch 0
 		putch $ch
 		add $index 1
 		to index
-		get_char &str $index
+		get_char $str $index
 		to ch
 	endwhile
 endf
