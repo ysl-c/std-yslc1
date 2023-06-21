@@ -1,0 +1,98 @@
+%include "core.ysl"
+
+func get_element arr index
+	param arr
+	param index
+
+	mul $index 2
+	to index
+
+	add $arr $index
+	to arr
+	peek16 $arr
+endf
+
+func set_element arr index value
+	param arr
+	param index
+	param value
+
+	mul $index 2
+	to index
+
+	add $arr $index
+	to arr
+	poke16 $arr $value
+endf
+
+func get_char str index
+	param str
+	param index
+
+	add $str $index
+	to str
+	peek8 $str
+endf
+
+func set_char str index value
+	param str
+	param index
+	param value
+
+	add $str $index
+	to str
+	poke8 $str $value
+endf
+
+func puthex byte
+	param byte
+	local int temp
+	local array 16 digits
+
+	set_element &digits 0 !0
+	set_element &digits 1 !1
+	set_element &digits 2 !2
+	set_element &digits 3 !3
+	set_element &digits 4 !4
+	set_element &digits 5 !5
+	set_element &digits 6 !6
+	set_element &digits 7 !7
+	set_element &digits 8 !8
+	set_element &digits 9 !9
+	set_element &digits 10 !A
+	set_element &digits 11 !B
+	set_element &digits 12 !C
+	set_element &digits 13 !D
+	set_element &digits 14 !E
+	set_element &digits 15 !F
+
+	div $byte 16
+	to temp
+	get_element &digits $temp
+	to temp
+	putch $temp
+
+	mod $byte 16
+	to temp
+	get_element &digits $temp
+	to temp
+	putch $temp
+endf
+
+func putstr str
+	param str
+
+	local int index
+	local int ch
+	set index 0
+	get_char &str $index
+	to ch
+
+	while greater $ch 0
+		putch $ch
+		add $index 1
+		to index
+		get_char &str $index
+		to ch
+	endwhile
+endf
