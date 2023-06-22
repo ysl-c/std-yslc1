@@ -190,3 +190,24 @@ func memcpy src dest n
 	endfor
 endf
 
+func strlen str
+	param str
+
+	local int idx
+	local int character
+
+	get_char &str $idx
+	to character
+
+	while greater $character 0
+		add $idx 1
+		to idx
+		get_char &str $idx
+		to character
+	endwhile
+
+	add $idx 1
+	to idx
+
+	return idx
+endf
