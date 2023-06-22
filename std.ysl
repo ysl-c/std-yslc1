@@ -96,3 +96,97 @@ func putstr str
 		to ch
 	endwhile
 endf
+
+func strcmp s1 s2
+	param s1
+	param s2
+
+	local int index
+	local int ch1
+	local int ch2
+	set index 0
+	get_char $s1 $index
+	to ch1
+	get_char $s2 $index
+	to ch2
+
+	while greater $ch1 0
+		if equals $ch1 $ch2
+			# bla bla bla
+		else
+			return 0
+		endif
+
+		add $index 1
+		to index
+		get_char $s1 $index
+		to ch1
+		get_char $s2 $index
+		to ch2
+	endwhile
+
+	return 1
+endf
+
+func readstr out
+	param out
+
+	local int input
+	local int index
+
+	while equals 1 1
+		getch
+		to input
+		putch $input
+		
+		if equals $input 13
+			putch 10
+			return
+		endif
+
+		set_char $out $index $input
+		add $index 1
+		to index
+	endwhile
+endf
+
+func max n1 n2
+	param n1
+	param n2
+
+	if greater $n1 $n2
+		return $n1
+	else
+		return $n2
+	endif
+endf
+
+func min n1 n2
+	param n1
+	param n2
+
+	if less $n1 $n2
+		return $n1
+	else
+		return $n2
+	endif
+endf
+
+func memcpy src dest n
+	param src
+	param dest
+	param n
+
+	for $n
+		local int byte
+		peek8 $src
+		to byte
+		poke8 $dest $byte
+
+		add $src 1
+		to src
+		add $dest 1
+		to dest
+	endfor
+endf
+
