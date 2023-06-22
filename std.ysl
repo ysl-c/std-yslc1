@@ -209,5 +209,5 @@ func strlen str
 	add $idx 1
 	to idx
 
-	return idx
+	return $idx
 endf
