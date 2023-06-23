@@ -214,6 +214,7 @@ func strlen str
 	return $idx
 endf
 
+# made by @LordOfTrident
 func putdec num
     param num
 
