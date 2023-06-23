@@ -10,7 +10,7 @@ func get_element arr index
 	add $arr $index
 	to arr
 	peek16 $arr
-endf
+endfunc
 
 func set_element arr index value
 	param arr
@@ -23,7 +23,7 @@ func set_element arr index value
 	add $arr $index
 	to arr
 	poke16 $arr $value
-endf
+endfunc
 
 func get_char str index
 	param str
@@ -32,7 +32,7 @@ func get_char str index
 	add $str $index
 	to str
 	peek8 $str
-endf
+endfunc
 
 func set_char str index value
 	param str
@@ -42,7 +42,7 @@ func set_char str index value
 	add $str $index
 	to str
 	poke8 $str $value
-endf
+endfunc
 
 func puthex byte
 	param byte
@@ -77,7 +77,7 @@ func puthex byte
 	get_element &digits $temp
 	to temp
 	putch $temp
-endf
+endfunc
 
 func putstr str
 	param str
@@ -95,7 +95,7 @@ func putstr str
 		get_char $str $index
 		to ch
 	endwhile
-endf
+endfunc
 
 func strcmp s1 s2
 	param s1
@@ -126,7 +126,7 @@ func strcmp s1 s2
 	endwhile
 
 	return 1
-endf
+endfunc
 
 func readstr out
 	param out
@@ -138,7 +138,7 @@ func readstr out
 		getch
 		to input
 		putch $input
-		
+
 		if equals $input 13
 			putch 10
 			return
@@ -148,7 +148,7 @@ func readstr out
 		add $index 1
 		to index
 	endwhile
-endf
+endfunc
 
 func max n1 n2
 	param n1
@@ -159,7 +159,7 @@ func max n1 n2
 	else
 		return $n2
 	endif
-endf
+endfunc
 
 func min n1 n2
 	param n1
@@ -170,7 +170,7 @@ func min n1 n2
 	else
 		return $n2
 	endif
-endf
+endfunc
 
 func memcpy src dest n
 	param src
@@ -190,7 +190,7 @@ func memcpy src dest n
 		add $dest 1
 		to dest
 	endfor
-endf
+endfunc
 
 func strlen str
 	param str
@@ -212,66 +212,122 @@ func strlen str
 	to idx
 
 	return $idx
-endf
+endfunc
 
 func newline
 	putch 13
 	putch 10
-endf
+endfunc
 
-# made by @LordOfTrident
+# following functions made by @LordOfTrident
+func not_equals n1 n2
+	param n1
+	param n2
+
+	if equals $n1 $n2
+		return 0
+	else
+		return 1
+	endif
+endfunc
+
+func var_add address value
+	param address
+	param value
+
+	local int number
+	peek16 $address
+	to number
+	add $number $value
+	to number
+	poke16 $address $number
+endfunc
+
+func var_sub address value
+	param address
+	param value
+
+	local int number
+	peek16 $address
+	to number
+	sub $number $value
+	to number
+	poke16 $address $number
+endfunc
+
+func var_mul address value
+	param address
+	param value
+
+	local int number
+	peek16 $address
+	to number
+	mul $number $value
+	to number
+	poke16 $address $number
+endfunc
+
+func var_div address value
+	param address
+	param value
+
+	local int number
+	peek16 $address
+	to number
+	div $number $value
+	to number
+	poke16 $address $number
+endfunc
+
+func inc address
+	param address
+
+	var_add $address 1
+endfunc
+
+func dec address
+	param address
+
+	var_sub $address 1
+endfunc
+
 func putdec num
-    param num
+	param num
 
-    if equals $num 0
-        putch !0
-        return
-    endif
+	if equals $num 0
+		putch !0
+		return
+	endif
 
-    local string digits "00000"
-    local int address
-    local int pos
-    local int i
-    local int n
-    set i 0
+	local string digits "00000"
+	local int address
+	local int pos
+	local int i
+	set i 0
 
-    set address &digits
+	set address &digits
 
-    local int end
-    set end 0
+	while not_equals $num 0
+		sub 4 $i
+		to pos
 
-    for n 5
-        if equals $end 0
-            sub 4 $i
-            to pos
+		local int offset
+		mod $num 10
+		to offset
 
-            local int off
-            mod $num 10
-            to off
+		local int ch
+		set ch !0
 
-            local int ch
-            set ch !0
+		var_add &ch $offset
+		set_char &digits $pos $ch
 
-            add $ch $off
-            to ch
+		var_div &num 10
+		if equals $num 0
+			var_add &address $pos
+		endif
 
-            set_char &digits $pos $ch
+		inc &i
+	endwhile
 
-            add $i 1
-            to i
-
-            if equals $num 0
-                set end 1
-                add $address $pos
-                to address
-                add $address 1
-                to address
-            else
-                div $num 10
-                to num
-            endif
-        endif
-    endfor
-
-    putstr $address
-endf
+	putstr $address
+endfunc
