@@ -177,7 +177,9 @@ func memcpy src dest n
 	param dest
 	param n
 
-	for $n
+	local int i
+
+ 	for i $n
 		local int byte
 		peek8 $src
 		to byte
@@ -210,4 +212,54 @@ func strlen str
 	to idx
 
 	return $idx
+endf
+
+func putdec num
+    param num
+
+    if equals $num 0
+        putch !0
+        return
+    endif
+
+    local string digits "00000"
+    local int address
+    local int i
+    set i 0
+
+    set address &digits
+
+    local int end
+    set end 0
+
+    local int j
+
+    for i 5
+        if equals $end 0
+            local int off
+            mod $num 10
+            to off
+
+            local int ch
+            set ch !0
+
+            add $ch $off
+            to ch
+
+            set_char &digits $i $ch
+
+            if equals $num 0
+                set end 1
+                add $address $i
+                to address
+                add $address 1
+                to address
+            else
+                div $num 10
+                to num
+            endif
+        endif
+    endfor
+
+    putstr $address
 endf
