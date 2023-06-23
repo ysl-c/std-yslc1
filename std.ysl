@@ -214,6 +214,11 @@ func strlen str
 	return $idx
 endf
 
+func newline
+	putch 13
+	putch 10
+endf
+
 # made by @LordOfTrident
 func putdec num
     param num
