@@ -225,7 +225,9 @@ func putdec num
 
     local string digits "00000"
     local int address
+    local int pos
     local int i
+    local int n
     set i 0
 
     set address &digits
@@ -233,10 +235,11 @@ func putdec num
     local int end
     set end 0
 
-    local int j
-
-    for i 5
+    for n 5
         if equals $end 0
+            sub 4 $i
+            to pos
+
             local int off
             mod $num 10
             to off
@@ -247,11 +250,14 @@ func putdec num
             add $ch $off
             to ch
 
-            set_char &digits $i $ch
+            set_char &digits $pos $ch
+
+            add $i 1
+            to i
 
             if equals $num 0
                 set end 1
-                add $address $i
+                add $address $pos
                 to address
                 add $address 1
                 to address
